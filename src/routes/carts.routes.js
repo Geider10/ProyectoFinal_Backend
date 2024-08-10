@@ -1,7 +1,6 @@
 import { Router } from "express"
 const router = Router()
 import CartsManager from "../controllers/cartsManager.js"
-import cartModel from "../models/cart.model.js"
 const cm = new CartsManager()
 
 router.get("/",async (req,res)=>{
@@ -28,8 +27,11 @@ router.get("/:cid", async (req,res)=>{
     try{     
         const id = req.params.cid
         const cart = await cm.getCartProducts(id)
-        console.log(cart);
-        res.json({sucess : "great", payload : cart})
+        // res.json({sucess : "great", payload : cart})
+
+        //craete view products the cart
+        const cartId = cart[0].products
+        res.render("cartProducts",{cartId})
     }
     catch(error){
         res.json({error : "error", error})

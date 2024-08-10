@@ -1,15 +1,28 @@
 {{!--utiliza los atributos del objeto products --}}
 {{#if isValid}}
 <div>
-    {{#each docs}}
-    <div>
-        <p> Nombre: {{this.name}} ___
-            Precio: {{this.price}} ___ 
-            Category:{{this.category}} ___
-            <button>Agregar al carrito</button>
-        </p>
-    </div>
-    {{/each}}
+    <table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th>Buttons</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each docs}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.stock}}</td>
+            <td>{{this.category}}</td>
+            <td><button id={{this._id}}  class="btnAddProduct">Agregar</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
 </div>
 <br/>
 <div>
@@ -27,3 +40,5 @@
 {{else}}
 <h1>No hay estudiantes para mostrar</h1>
 {{/if}}
+
+<script src="/js/productsManager.js"></script>

@@ -7,7 +7,7 @@ const pm = new ProductManager()
 //segun el endpoint rendersiza una vista u otra
 router.get("/", async(req,res)=>{
     const products = await pm.get()
-    res.render("home",{products})
+    res.render("home",products)
 })
 router.get("/realTimeProducts",(req,res)=>{
     res.render("realTimeProducts",{})

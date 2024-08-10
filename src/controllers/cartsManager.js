@@ -4,16 +4,16 @@ const pm = new ProductManager()
 
 class CartsManager{
     constructor(){}
-    getCarts(){
-        const carts = cartModel.find()
+    async getCarts(){
+        const carts = await cartModel.find()
         return carts
     }
     addCart(cart){
         cartModel.create(cart)
     }
-    getCartProducts(id){
+    async getCartProducts(id){
         //hace referencia a un product por ID de la colleccion products, dentro del cart
-        const cart = cartModel.find({_id:id}).populate("products.productId")
+        const cart = await cartModel.find({_id:id}).populate("products.productId")
         return cart
     }
     async addProductCart(cartId,productId){
