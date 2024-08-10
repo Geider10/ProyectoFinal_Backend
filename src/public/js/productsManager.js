@@ -1,5 +1,6 @@
 // add product by at cart selection
 const btnProduct = document.querySelector(".btnAddProduct")
+//btn hace una peticion post addProductCart al carrito
 btnProduct.addEventListener("click",(e)=>{
     const productId = e.target.id
     //"endpoint",options{}

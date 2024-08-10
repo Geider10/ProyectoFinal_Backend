@@ -20,7 +20,7 @@ app.use(express.urlencoded({extended : true}))//recibir parametros por url
 
 app.use("/api/productsRouter",productsRouter)
 app.use("/api/cartsRouter",cartsRouter)
-app.use("/",router)
+app.use("/api/view",router)
 
 //handlebars
 app.engine("handlebars",handlebars.engine())//instanciar el motor

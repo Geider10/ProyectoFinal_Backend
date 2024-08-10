@@ -1,7 +1,13 @@
 <div>
-    <h2>hola</h2>
-    {{#each productId}}
-        <p>Name :  {{this.name}}</p>
-        <p>Price : perro</p>
-    {{/each }}
+    <h2>Productos en el carrito</h2>
+    {{#each cartId}}
+        {{!-- {{log this}} --}}
+        <div>
+            <h3>Producto: {{this.productId.name}}</h3>
+            <p>Descripción: {{this.productId.description}}</p>
+            <p>Precio: ${{this.productId.price}}</p>
+            <p>Cantidad: {{this.quantity}}</p>
+        </div>
+        <hr>
+    {{/each}}
 </div>

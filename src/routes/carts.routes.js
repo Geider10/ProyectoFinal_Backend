@@ -23,14 +23,15 @@ router.post("/",async (req,res)=>{
         res.json({error : "error", error})
     }
 })
+
 router.get("/:cid", async (req,res)=>{
     try{     
         const id = req.params.cid
         const cart = await cm.getCartProducts(id)
         // res.json({sucess : "great", payload : cart})
 
-        //craete view products the cart
-        const cartId = cart[0].products
+        // clonando los objetos para eliminar cualquier referencia y restriccion del handlebars
+        const cartId = cart[0].products.map(product => JSON.parse(JSON.stringify(product)))
         res.render("cartProducts",{cartId})
     }
     catch(error){

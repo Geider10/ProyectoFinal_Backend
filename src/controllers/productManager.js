@@ -7,9 +7,6 @@ class ProductManager {
         return await productModel.find()
     }
     async getProducts(limit,page, sort, query){
-        // const p =  await productModel.aggregate([
-        //     {$match : {category : query}}
-        // ])
         let products = await productModel.paginate()
         if(limit){
             const p = await productModel.paginate({},{limit,lean : true})
@@ -19,17 +16,25 @@ class ProductManager {
             const p = await productModel.paginate({},{page,lean : true})
             products = p
         }
+        if(sort){
+            const p = await productModel.paginate({},{sort : {price : sort},lean : true})
+            products = p
+        }
+        if(query){
+            const p = await productModel.paginate({category: query},{lean : true})
+            products = p
+        }
         if(limit && page){
             const p = await productModel.paginate({},{limit,page,lean : true})
             products = p
         }
         if(limit && page && sort){
-            const p = await productModel.paginate({},{limit,page,sort : {price : sort}})
+            const p = await productModel.paginate({},{limit,page,sort : {price : sort},lean : true})
             products = p
         }
         if(limit && page && sort && query){
             // const p = await productModel.paginate({},{limit, page, sort : {price : sort}, select : {category : query}})
-            const p = await productModel.paginate({category: query},{limit, page, sort : {price : sort}})
+            const p = await productModel.paginate({category: query},{limit, page, sort : {price : sort},lean : true})
             products = p
         }
         return products
