@@ -93,6 +93,9 @@ class CartsManager{
         if(cart){
             const product = cart.products.find(p => p.productId == pid)
             if(product){
+
+                //no actualiza el atributo cuantity
+                //soluciones p.pop del product, luego p.push del product actualizado
                 cart.products.map(p => {
                     if(p.productId == pid){
                         const newProduct= {...p,quantity:qua.quantity}

@@ -3,8 +3,8 @@ import productModel from '../models/product.model.js';
 class ProductManager {
     constructor(){
     }
-    get(){
-        return productModel.find()
+    async get(){
+        return await productModel.find()
     }
     async getProducts(limit,page, sort, query){
         // const p =  await productModel.aggregate([
@@ -12,11 +12,15 @@ class ProductManager {
         // ])
         let products = await productModel.paginate()
         if(limit){
-            const p = await productModel.paginate({},{limit})
+            const p = await productModel.paginate({},{limit,lean : true})
+            products = p
+        }
+        if(page){
+            const p = await productModel.paginate({},{page,lean : true})
             products = p
         }
         if(limit && page){
-            const p = await productModel.paginate({},{limit,page})
+            const p = await productModel.paginate({},{limit,page,lean : true})
             products = p
         }
         if(limit && page && sort){

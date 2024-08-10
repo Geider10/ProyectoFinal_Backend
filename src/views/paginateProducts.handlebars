@@ -1,0 +1,29 @@
+{{!--utiliza los atributos del objeto products --}}
+{{#if isValid}}
+<div>
+    {{#each docs}}
+    <div>
+        <p> Nombre: {{this.name}} ___
+            Precio: {{this.price}} ___ 
+            Category:{{this.category}} ___
+            <button>Agregar al carrito</button>
+        </p>
+    </div>
+    {{/each}}
+</div>
+<br/>
+<div>
+    {{!-- se activa el cambio de pagina si se cumple osea,pageActual > prevPage --}}
+    {{#if hasPrevPage}}
+        <a href={{this.prevLink}}><< Anterior</a>
+    {{/if}}
+    &nbsp;
+    {{this.page}}
+    &nbsp;
+     {{#if hasNextPage}}
+        <a href={{this.nextLink}}>Siguiente >></a>
+    {{/if}} 
+</div>
+{{else}}
+<h1>No hay estudiantes para mostrar</h1>
+{{/if}}
