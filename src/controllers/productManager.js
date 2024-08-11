@@ -47,16 +47,17 @@ class ProductManager {
         let empty = false
         const p = {...product, status: true}//poner status = true obligado
         for(let clave in p){
-            if(p[clave] === ""){
+            if(!p[clave]){
                 empty = true
                 break
             }
         }
         if(empty){
-            return { "Error" : "Todos los campos son obligatorios"}
+            console.log("Todos los campos son obligatorios");
         }
         else{
-            productModel.create(product)
+            productModel.create(p)
+            console.log("Se agrego un producto con exito");
         }
     }
     updateProduct(id, product){
@@ -65,16 +66,16 @@ class ProductManager {
             let empty = false
             const p = {...product, status: true}//poner status = true obligado
             for(let clave in p){
-                if(p[clave] === ""){
+                if(!p[clave]){
                     empty = true
                     break
                 }
             }
             if(empty){
-                return { "Error" : "Todos los campos son obligatorios"}
+                console.log("Todos los campos son obligatorios");
             }
             else{
-                return productModel.updateOne({_id:id},product)
+                return productModel.updateOne({_id:id},p)
             }
         }
         else{
