@@ -68,7 +68,7 @@ proyecto/
 │   │
 │   ├── public/
 │   │   ├── css/
-|   |       └── style.css
+|   |   |   └── style.css
 │   │   └── js/ 
 │   │       ├── index.js # Utiliza socket.io el cliente para enviar data al servidor
 │   │       └── productsManager # Utiliza fetch el cliente para agregar productos en la base de datos
@@ -133,10 +133,10 @@ api/productsRouter
 ```
 1 GET : http://localhost:8080/api/productsRouter
 2 GET : http://localhost:8080/api/productsRouter?limit=5&page=1&sort=1&category=juguetes
-3 GET : http://localhost:8080/api/products/:pId
+3 GET : http://localhost:8080/api/productsRouter/:pId
 4 POST : http://localhost:8080/api/productsRouter
 5 PUT : http://localhost:8080/api/productsRouter/:pId
-6 DELETE : http://localhost:8080/api/products/:pId
+6 DELETE : http://localhost:8080/api/productsRouter/:pId
 ```
 schema del producto
 ```
