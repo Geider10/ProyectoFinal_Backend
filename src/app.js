@@ -1,61 +1,39 @@
 import express from "express"
+import mongoose from 'mongoose';    
 import {Server} from "socket.io"
+import dotenv from 'dotenv';
+dotenv.config()
+
 import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
-import 'dotenv/config';
-import mongoose from 'mongoose';    
-
-//config de handlebars
+import {authRouter} from './routes/auth.routes.js';
 import handlebars from "express-handlebars"
 import __dirname from "./utils.js"
-import router from "./routes/views.routes.js"
-// import ProductManager from "./controllers/productManager.js"
-// const pm = new ProductManager()
+import viewRouter from "./routes/views.routes.js"
 
 const app = express()
 const PORT = process.env.PORT || 8080
 
 app.use(express.json())
-app.use(express.urlencoded({extended : true}))//recibir parametros por url
+app.use(express.urlencoded({extended : true}))
 
 app.use("/api/productsRouter",productsRouter)
 app.use("/api/cartsRouter",cartsRouter)
-app.use("/api/view",router)
+app.use('api/auth',authRouter)
+//render views
+app.use("/",viewRouter) 
 
-//handlebars
-app.engine("handlebars",handlebars.engine())//instanciar el motor
+
+app.engine("handlebars",handlebars.engine())
 app.set("views",__dirname + "/views")
-app.set("view engine", "handlebars")//motor se renderiza con handlebars
+app.set("view engine", "handlebars")
 app.use(express.static(__dirname + "/public"))
 
 app.listen(PORT,()=>console.log(`escuchando el puerto ${PORT}`))
 
-
 const main = async ()=>{
-    await mongoose.connect(process.env.uri)
+    await mongoose.connect(process.env.MONGO_URI)
     .then(()=>console.log("conectado a mongo atlas"))
     .catch((error)=>console.log("error de conexin",error))
 } 
 main()
-
-// const httpServer = app.listen(PORT,()=>console.log(`escuchando el puerto ${PORT}`))
-// const socketServer = new Server(httpServer)
-// socketServer.on("connection", socket=>{
-
-//     const products = pm.getProducts()
-//     socket.emit("get",products)
-
-//     socket.on("add", data=>{  // ID del evento
-//         pm.addProduct(data)
-//         const products =  pm.getProducts()
-//         socket.emit("resAdd",products)
-//     })
-//     socket.on("delete", data =>{
-//         pm.deleteProduct(parseInt(data.id))
-//         const products = pm.getProducts()
-//         socket.emit("resDelete",products)
-//     })
-// })
-
-
-
