@@ -8,7 +8,7 @@ import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
 import {authRouter} from './routes/auth.routes.js';
 import handlebars from "express-handlebars"
-import __dirname from "./utils.js"
+import {__dirname} from "./utils.js"
 import viewRouter from "./routes/views.routes.js"
 
 const app = express()
@@ -19,7 +19,7 @@ app.use(express.urlencoded({extended : true}))
 
 app.use("/api/productsRouter",productsRouter)
 app.use("/api/cartsRouter",cartsRouter)
-app.use('api/auth',authRouter)
+app.use('/api/auth',authRouter)
 //render views
 app.use("/",viewRouter) 
 

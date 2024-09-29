@@ -1,10 +1,11 @@
-import {} from '../models/user.dao.js';
+import {addUser} from '../models/user.dao.js';
 
 export class AuthManager{
     async register(req,res) {
-        const {email,password} = req.body
         try{
-            const user = await getUserByEmail(email,password)
+            const userBody = req.body
+            const user = await addUser(userBody)
+            res.json(user)
         }
         catch(e){
             res.json({error: e.message})
