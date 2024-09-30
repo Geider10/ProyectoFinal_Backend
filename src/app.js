@@ -4,9 +4,12 @@ import {Server} from "socket.io"
 import dotenv from 'dotenv';
 dotenv.config()
 import passport from 'passport';
+
 import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
 import {authRouter} from './routes/auth.routes.js';
+import {userRouter} from './routes/user.routes.js';
+
 import handlebars from "express-handlebars"
 import {__dirname} from "./utils.js"
 import viewRouter from "./routes/views.routes.js"
@@ -14,13 +17,14 @@ import viewRouter from "./routes/views.routes.js"
 const app = express()
 const PORT = process.env.PORT || 8080
 
+app.use(passport.initialize())
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
-app.use(passport.initialize())
 
 app.use("/api/productsRouter",productsRouter)
 app.use("/api/cartsRouter",cartsRouter)
 app.use('/api/auth',authRouter)
+app.use('/api/user',userRouter)
 //render views
 app.use("/",viewRouter) 
 

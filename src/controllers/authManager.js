@@ -32,6 +32,7 @@ export class AuthManager{
             const token = generateToken(user._id)
             if(!token) return res.json({error : 'not there is tokek'})
             res.header('Authorization',token).json({succes: 'login great!'})
+            console.log(token);
         }
         catch(e){
             res.json({error: e.message}) 
