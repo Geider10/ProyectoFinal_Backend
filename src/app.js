@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import {Server} from "socket.io"
 import dotenv from 'dotenv';
 dotenv.config()
-
+import passport from 'passport';
 import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
 import {authRouter} from './routes/auth.routes.js';
@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 8080
 
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
+app.use(passport.initialize())
 
 app.use("/api/productsRouter",productsRouter)
 app.use("/api/cartsRouter",cartsRouter)

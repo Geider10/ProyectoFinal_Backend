@@ -6,3 +6,7 @@ export const getUserByEmail= async (email)=>{
 export const addUser = async (user) => {
     await userModel.create(user)
 }
+export const getUserById = async (id)=>{
+    const user = await userModel.findOne({_id:id})
+    return user
+}
