@@ -1,6 +1,7 @@
 export class UserManager {
     getProfileUser(req,res){
         const user = req.user
-        res.json({success:user})
+        //req.user.id obtenemos y retornamos el user de la base de datos
+        res.json({success:'access to protected route', user : user})
     }
 }

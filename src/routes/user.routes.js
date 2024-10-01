@@ -4,4 +4,4 @@ import {UserManager} from '../controllers/userManager.js';
 export const userRouter = Router()
 const um = new UserManager()
 
-userRouter.get('/protected',passportCall('jwt'),um.getProfileUser)
+userRouter.get('/protected',passportCall('current'),um.getProfileUser)

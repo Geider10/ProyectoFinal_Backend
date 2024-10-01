@@ -4,6 +4,7 @@ import {Server} from "socket.io"
 import dotenv from 'dotenv';
 dotenv.config()
 import passport from 'passport';
+import './passport/jwt.strategy.js'
 
 import productsRouter from "./routes/products.routes.js"
 import cartsRouter from "./routes/carts.routes.js"
