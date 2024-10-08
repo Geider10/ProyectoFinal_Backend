@@ -1,8 +1,8 @@
 import express from "express"
-import ProductManager from "../controllers/productManager.js"
+import {ProductController} from "../controllers/product.controller.js"
 
 const router = express.Router()
-const pm = new ProductManager()
+const pm = new ProductController()
 
 //segun el endpoint rendersiza una vista u otra 
 //utiliza socket io

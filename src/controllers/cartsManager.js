@@ -1,6 +1,6 @@
 import cartModel from '../models/cart.model.js';
-import ProductManager from "./productManager.js"
-const pm = new ProductManager()
+import {ProductController} from "./product.controller.js"
+const pm = new ProductController()
 
 class CartsManager{
     constructor(){}

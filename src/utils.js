@@ -4,6 +4,7 @@ export const __dirname = dirname(fileURLToPath(import.meta.url))
 
 import dotenv from 'dotenv';
 dotenv.config()
+
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 export const encryptPassword = async(password) =>{

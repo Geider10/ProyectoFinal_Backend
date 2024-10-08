@@ -6,8 +6,8 @@ const schema = mongoose.Schema({
     email : {type: String, require : true, unique: true},
     password : {type: String, require : true},
     age: {type: Number, require : true},
-    cart : {type: [{cartId : {type:mongoose.Schema.Types.ObjectId,ref:"carts"}}],default : []},
-    role : {type:String,default:'user'}
+    role : {type:String,default:'user'},
+    cart : {type: [{cartId : {type:mongoose.Schema.Types.ObjectId,ref:"carts"}}],default : []}
 })
 
 export const userModel = mongoose.model('users',schema)
