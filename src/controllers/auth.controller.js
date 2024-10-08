@@ -1,11 +1,12 @@
 import { json } from 'express';
-import { getUserByEmail,addUser} from '../models/user.dao.js';
+import { UserDao} from '../models/user.dao.js';
 import {encryptPassword, verifyPassword,generateToken} from '../utils.js';
-export class AuthManager{
+const userDao = new UserDao()
+export class AuthController{
     async register(req,res) {
         try{
             const user = req.body
-            const existsUser = await getUserByEmail(user.email)
+            const existsUser = await userDao.getUserByEmail(user.email)
             if(!existsUser){
                 const newUser = {
                     ...user,
@@ -25,7 +26,7 @@ export class AuthManager{
     async login(req,res){
         try{
             const {email, password} = req.body
-            const user = await getUserByEmail(email)
+            const user = await userDao.getUserByEmail(email)
             if(!user) return res.json({error: 'user not found'})
             const matchPassword = await verifyPassword(password, user.password)
             if(!matchPassword) return res.json({error: 'password not match with email'})
