@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-//products: definir los atributos de los objetos y pasar sus valores desde post. 
-//products se crea solo sin definir por el cliente
+//schema: definir los atributos
 const schema = mongoose.Schema({
     products:{type: [{
         productId:{type:mongoose.Schema.Types.ObjectId,

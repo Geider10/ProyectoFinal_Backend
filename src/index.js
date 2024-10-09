@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config()
 
 import {productRouter} from "./routes/product.routes.js"
-import cartsRouter from "./routes/carts.routes.js"
+import {cartRouter} from './routes/cart.routes.js';
 import {authRouter} from './routes/auth.routes.js';
 import {userRouter} from './routes/user.routes.js';
 
@@ -22,7 +22,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 
 app.use("/api/product",productRouter)
-app.use("/api/cart",cartsRouter)
+app.use("/api/cart",cartRouter)
 app.use('/api/auth',authRouter)
 app.use('/api/user',userRouter)
 //render views
