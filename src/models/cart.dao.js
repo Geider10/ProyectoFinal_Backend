@@ -6,7 +6,7 @@ export class CartDao{
         return carts
     }
     async getCartById(id){
-        const cart = await cartModel.find({_id : id})
+        const cart = await cartModel.findOne({_id : id})
         return cart
     }
     async addCart(cart){
