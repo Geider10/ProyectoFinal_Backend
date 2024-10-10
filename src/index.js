@@ -5,14 +5,10 @@ import './passport/jwt.strategy.js'
 import dotenv from 'dotenv';
 dotenv.config()
 
-import {productRouter} from "./routes/product.routes.js"
-import {cartRouter} from './routes/cart.routes.js';
-import {authRouter} from './routes/auth.routes.js';
-import {userRouter} from './routes/user.routes.js';
-
+import viewRouter from "./routes/views.routes.js"
+import {mainRouter} from './routes/main.routes.js';
 import handlebars from "express-handlebars"
 import {__dirname} from "./utils.js"
-import viewRouter from "./routes/views.routes.js"
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -21,11 +17,7 @@ app.use(passport.initialize())
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 
-app.use("/api/product",productRouter)
-app.use("/api/cart",cartRouter)
-app.use('/api/auth',authRouter)
-app.use('/api/user',userRouter)
-//render views
+app.use('/api',mainRouter)
 app.use("/",viewRouter) 
 
 app.engine("handlebars",handlebars.engine())
