@@ -1,3 +1,139 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* index */
+.hero {
+    margin: 180px auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background-color: #2f91d3;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #188ad6;
+}
+/* header & footer */
+header {
+    background-color: #2f91d3;
+    color: #fff;
+    padding: 10px 60px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .btn-dynamic{
+    border: 1px solid;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+header h1{
+    font-size: x-large;
+}
+header a {
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #464646;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+footer a{
+    display: inline-block;
+    color: #fff;
+}
+/* .dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-toggle {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0 10px;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px 0;
+    min-width: 150px;
+    z-index: 1;
+}
+
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown-menu ul li {
+    padding: 6px 12px;
+}
+
+.dropdown-menu ul li a{
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-menu ul li a:hover {
+    background-color: #d4d3d3;
+    border-radius: 4px;
+}
+.dropdown-menu ul li span{
+    color: #333;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+.dropdown-menu ul li span:hover {
+    background-color: #d4d3d3;
+    border-radius: 4px;
+}
+/* form */
 table {
     width: 100%;
     border-collapse: collapse;
