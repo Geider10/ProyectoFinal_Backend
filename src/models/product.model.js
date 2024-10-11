@@ -9,7 +9,9 @@ const schema = mongoose.Schema({
     status: {type : Boolean, require : true},
     stock: {type : Number, require : true},
     category: {type : String, require : true},
-    carts : {type: [{cartId : {type:mongoose.Schema.Types.ObjectId,ref:"carts"}}],default : []}
+    carts : {
+        type: Array,
+        default : []}
 })
 schema.plugin(mongoosePaginate)
 export const productModel = mongoose.model('products', schema)

@@ -41,12 +41,12 @@ export class CartController{
             const productId = req.params.pId
             const cart = await cartDao.getCartById(cartId)
             if(cart){
-                const productExist = cart.products.some(p => p.productId == productId)
+                const productExist = cart.products.some(pro => pro.productId._id == productId)
                 console.log(productExist);
                 if(productExist){//increment the product
                     cart.products.map(p => {
-                        if(p.productId == productId){
-                            return {...p, quantity: p.quantity++}//replace: first old product, next new product
+                        if(p.productId._id == productId){
+                            return {...p, quantity: p.quantity++}//spred operator: refresh attribute 
                         }
                         return p
                     })
@@ -54,7 +54,7 @@ export class CartController{
                     res.json({success:'request post increment product inside cart',payload : newCart})
                 }
                 else{//add product in the cart
-                    //{solo acepta los atributos definidos en el schema products}
+                    //{solo acepta atributos del schema products}
                     cart.products.push({productId: productId,quantity : 1})
                     const newCart = await cartDao.updateContentAtCart(cartId,cart)//solo acepta cart como argumento
                     res.json({success:'request post add product inside cart',payload : newCart})
@@ -65,7 +65,7 @@ export class CartController{
             res.json({error:e.message})
         }
     }
-    //dudoso, enpoint de +/- la cantidad del producto
+    //dudoso, enpoint de +/- la cantidad de un producto
     async updateProductsAtCart(req,res){
         try{
             const cartId = req.params.cId
