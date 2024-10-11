@@ -1,4 +1,3 @@
-import { json } from 'express';
 import {ProductDao} from '../models/product.dao.js';
 const productDao = new ProductDao()
 export class ProductController{
@@ -6,42 +5,13 @@ export class ProductController{
         try{
             const limit = parseInt(req.query.limit) || 10
             const page = parseInt(req.query.page) || 1
-            const sort = parseInt(req.query.sort)
-            const category = req.query.category
-            let products = await productDao.getProducts().paginate()
-            if(limit){
-                const p = await productDao.getProducts().paginate({},{limit,lean : true})
-                products = p
-            }
-            if(page){
-                const p = await productDao.getProducts().paginate({},{page,lean : true})
-                products = p
-            }
-            if(sort){
-                const p = await productDao.getProducts().paginate({},{sort : {price : sort},lean : true})
-                products = p
-            }
-            if(category){
-                const p = await productDao.getProducts().paginate({category: category},{lean : true})
-                products = p
-            }
-            if(limit && page){
-                const p = await productDao.getProducts().paginate({},{limit,page,lean : true})
-                products = p
-            }
-            if(limit && page && sort){
-                const p = await productDao.getProducts().paginate({},{limit,page,sort : {price : sort},lean : true})
-                products = p
-            }
-            if(limit && page && sort && category){
-                // const p = await productModel.paginate({},{limit, page, sort : {price : sort}, select : {category : query}})
-                const p = await productDao.getProducts().paginate({category: category},{limit, page, sort : {price : sort},lean : true})
-                products = p
-            }
+            const category = req.query.category 
+            const products = await productDao.getProducts(limit, page, category)
+            if(products.docs.length == 0) return res.json({error : 'there are not products'})
             res.json({success: 'request get of products', payload: products})
         }
         catch(e){
-            res.json({erros : e.message})
+            res.json({error : e.message})
         } 
     }
     async getProductById(req,res){ 
@@ -59,7 +29,7 @@ export class ProductController{
         try{
             const product = req.body
             const refreshProduct = {...product, status: true}
-            //lanza error si hay algun attributo esta vacio
+            //lanza error si hay algun atributo vacio
             for(let key in refreshProduct){
                 if(!refreshProduct[key]){
                     return res.json({error: 'product have some attribute empty'})

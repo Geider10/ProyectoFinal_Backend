@@ -13,7 +13,7 @@ const schema = mongoose.Schema({
         type: Array,
         default : []}
 })
-schema.plugin(mongoosePaginate)
+schema.plugin(mongoosePaginate)//segmentar los productos para mostrar al cliente
 export const productModel = mongoose.model('products', schema)
 
 

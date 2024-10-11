@@ -1,12 +1,19 @@
 import {productModel} from './product.model.js';
 import {ObjectId} from 'mongodb';
 export class ProductDao{
-    async getProducts(){
-        const products = await productModel.find({})
-        return products
+    async getProducts(limit, page, category){
+        if(category){
+            const products = await productModel.paginate({category},{limit, page})
+            return products
+        }
+        else{
+            const products = await productModel.paginate({},{limit, page})
+            return products
+        }
+        
     }
     async getProductById(id){
-        const product = await productModel.find({_id:new ObjectId(id)})
+        const product = await productModel.findOne({_id:id})
         return product
     }
     async addProduct(product){
