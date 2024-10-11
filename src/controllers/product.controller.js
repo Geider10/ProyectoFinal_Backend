@@ -29,7 +29,7 @@ export class ProductController{
         try{
             const product = req.body
             const refreshProduct = {...product, status: true}
-            //lanza error si hay algun atributo vacio
+            //add seguro? lanza error si hay algun atributo vacio
             for(let key in refreshProduct){
                 if(!refreshProduct[key]){
                     return res.json({error: 'product have some attribute empty'})
@@ -45,19 +45,16 @@ export class ProductController{
     async updateProduct(req,res){
         try{
             const id = req.params.id
-            let newProduct = req.body
-            let product = await productDao.getProductById(id)
-            //product actualiza solo los atributos que coincidan
-            for (const key in newProduct) {
-                if(product.hasOwnProperty(key)) {
+            const newProduct = req.body
+            const product = await productDao.getProductById(id)
+            //update seguro? si los atributos del newProduct coinciden con los del product
+            for (const key in product) {
+                if(newProduct.hasOwnProperty(key)) {
                     product[key] = newProduct[key]
-                    console.log(product[key])
                 }
-            }   
-            await product.save()
-            // const p = await productDao.updateProduct(id,product)
-            // console.log(p);
-            res.json({success: 'request put of product'})
+            }
+            const updateProduct = await productDao.updateProduct(id,product)
+            res.json({success: 'request put of product',payload : updateProduct})
         }
         catch(e){
             res.json({error: e.message})

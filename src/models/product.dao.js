@@ -20,11 +20,7 @@ export class ProductDao{
         await productModel.create(product)
     }
     async updateProduct(id, product){
-        const newProduct = await productModel.findOneAndUpdate(
-        {_id:new ObjectId(id)},
-        {$set : product},
-        {returnDocument: 'after', upsert: false }
-    )
+        const newProduct = await productModel.updateOne({_id : id},{$set : product})
         return newProduct
     }
     async deleteProduct(id){
