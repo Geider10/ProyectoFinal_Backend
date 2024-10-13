@@ -1,8 +1,5 @@
 import {productModel} from './product.model.js';
 export class ProductDao{
-    async testLog(){
-        console.log('test de productos');
-    }
     async getProducts(limit, page, category){
         if(category){
             const products = await productModel.paginate({category},{limit, page})

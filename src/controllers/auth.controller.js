@@ -2,13 +2,10 @@ import {encryptPassword, verifyPassword,generateToken} from '../utils.js';
 import {userDao} from '../models/persistence.js';
 
 export class AuthController{
-    constructor(){
-        this.userDao = userDao
-    }
     async register(req,res) {
         try{
             const user = req.body
-            const existsUser = await this.userDao.getUserByEmail(user.email)
+            const existsUser = await userDao.getUserByEmail(user.email)
             if(!existsUser){
                 const newUser = {
                     ...user,
@@ -28,7 +25,7 @@ export class AuthController{
     async login(req,res){
         try{
             const {email, password} = req.body
-            const user = await this.userDao.getUserByEmail(email)
+            const user = await userDao.getUserByEmail(email)
             if(!user) return res.json({error: 'user not found'})
             const matchPassword = await verifyPassword(password, user.password)
             if(!matchPassword) return res.json({error: 'password not match with email'})

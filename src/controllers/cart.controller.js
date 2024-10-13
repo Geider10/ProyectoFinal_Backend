@@ -1,12 +1,9 @@
 import {cartDao} from '../models/persistence.js';
 
 export class CartController{
-    constructor(){
-        this.cartDao = cartDao
-    }
     async getCarts(req,res){
         try{
-            const carts = await this.cartDao.getCarts()
+            const carts = await cartDao.getCarts()
             if(!carts) return res.json({error : 'there not carts'})
             res.json({success: 'request get of all carts',payload: carts})
         }
@@ -19,7 +16,7 @@ export class CartController{
             //hace referencia a un product por ID de la colleccion products, dentro del cart
             // const cart = await cartModel.find({_id:id}).populate("products.productId")
             const id = req.params.cId
-            const cart = await this.cartDao.getCartById(id)
+            const cart = await cartDao.getCartById(id)
             if(!cart) return res.json({error : 'cart not found'})
             res.json({success: 'request get of one cart', payload: cart})
         }
@@ -30,7 +27,7 @@ export class CartController{
     async addCart(req,res){
         try{
             const cart = req.body//empty
-            await this.cartDao.addCart(cart)
+            await cartDao.addCart(cart)
             res.json({success:'request post of cart'})
         }
         catch(e){
@@ -41,7 +38,7 @@ export class CartController{
         try{
             const cartId = req.params.cId
             const productId = req.params.pId
-            const cart = await this.cartDao.getCartById(cartId)
+            const cart = await cartDao.getCartById(cartId)
             if(cart){
                 const productExist = cart.products.some(pro => pro.productId._id == productId)
                 console.log(productExist);
@@ -52,13 +49,13 @@ export class CartController{
                         }
                         return p
                     })
-                    const newCart = await this.cartDao.updateContentAtCart(cartId, cart)
+                    const newCart = await cartDao.updateContentAtCart(cartId, cart)
                     res.json({success:'request post increment product inside cart',payload : newCart})
                 }
                 else{//add product in the cart
                     //{solo acepta atributos del schema products}
                     cart.products.push({productId: productId,quantity : 1})
-                    const newCart = await this.cartDao.updateContentAtCart(cartId,cart)//solo acepta cart como argumento
+                    const newCart = await cartDao.updateContentAtCart(cartId,cart)//solo acepta cart como argumento
                     res.json({success:'request post add product inside cart',payload : newCart})
                 }
             }
@@ -72,7 +69,7 @@ export class CartController{
         try{
             const cartId = req.params.cId
             const productsCart = req.body
-            const newCart = await this.cartDao.updateContentAtCart(cartId,productsCart)
+            const newCart = await cartDao.updateContentAtCart(cartId,productsCart)
             res.json({success: 'request update of products in cart',payload : newCart})
         }
         catch(e){
@@ -83,7 +80,7 @@ export class CartController{
     async deleteProducts(req,res){
         try{
             const cartId = req.params.cId
-            const newCart = await this.cartDao.updateContentAtCart(cartId, {products:[]})
+            const newCart = await cartDao.updateContentAtCart(cartId, {products:[]})
             res.json({success : 'request delete all products of cart',payload: newCart})
         }
         catch(e){
@@ -94,9 +91,9 @@ export class CartController{
         try{
             const cartId = req.params.cId
             const productId = req.params.pId
-            const cart = await this.cartDao.getCartById(cartId)
+            const cart = await cartDao.getCartById(cartId)
             const filterProductId=  cart.products.filter(p => p.productId != productId)
-            const newCart = await this.cartDao.updateContentAtCart(cartId, {products: filterProductId})
+            const newCart = await cartDao.updateContentAtCart(cartId, {products: filterProductId})
             res.json({success: 'request delete one product of cart',payload : newCart})
         }
         catch(e){
