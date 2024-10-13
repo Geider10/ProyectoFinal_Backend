@@ -4,7 +4,11 @@ export const viewRouter = Router()
 viewRouter.get('/',(req,res)=>{
     res.render('index')
 })
-//utiliza fetch
+viewRouter.get('api/product/',(req,res)=>{
+    const response = res
+    console.log(response);
+    res.render('index')
+})
 // viewRouter.get("/products",async(req,res)=>{
 //     const limit = parseInt(req.query.limit) || 5
 //     const page = parseInt(req.query.page) || 1
