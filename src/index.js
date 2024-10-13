@@ -4,7 +4,6 @@ import handlebars from "express-handlebars"
 import './passport/jwt.strategy.js'
 import 'dotenv/config'
 
-import {initMongoDB} from './db/connection.js';
 import {mainRouter} from './routes/main.routes.js';
 import {viewRouter} from './routes/views.routes.js';
 import {__dirname} from "./utils.js"
@@ -25,4 +24,3 @@ app.use('/api',mainRouter)
 app.use('/',viewRouter)
 
 app.listen(PORT,()=>console.log(`listerning ${PORT}`))
-initMongoDB()

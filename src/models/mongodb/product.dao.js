@@ -1,6 +1,8 @@
 import {productModel} from './product.model.js';
-import {ObjectId} from 'mongodb';
 export class ProductDao{
+    async testLog(){
+        console.log('test de productos');
+    }
     async getProducts(limit, page, category){
         if(category){
             const products = await productModel.paginate({category},{limit, page})

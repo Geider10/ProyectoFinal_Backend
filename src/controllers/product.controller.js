@@ -1,5 +1,4 @@
-import {ProductDao} from '../models/product.dao.js';
-const productDao = new ProductDao()
+import {productDao} from '../models/persistence.js';
 export class ProductController{
     async getProducts(req,res){
         try{
@@ -16,8 +15,10 @@ export class ProductController{
     }
     async getProductById(req,res){ 
         try{
+            productDao.testLog()
             const id = req.params.id
             const product = await productDao.getProductById(id)
+            console.log(product);
             if(!product) return res.json({error: 'user not found'})
             res.json({success: 'request get of product by id',payload : product})
         }
