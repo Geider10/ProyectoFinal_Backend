@@ -18,10 +18,7 @@ switch (typeDB) {
     case 'MYSQL':
         console.log('match with mysql');
     default:
-        cartDao = new CartDao()
-        productDao = new ProductDao()
-        userDao = new UserDao()
-        // console.log('Not match with db :(');
+        console.log('Not match with db :(');
         break;
 }
 
