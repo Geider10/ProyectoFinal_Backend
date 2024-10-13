@@ -1,5 +1,6 @@
 import {encryptPassword, verifyPassword,generateToken} from '../utils.js';
-import {userDao} from '../models/persistence.js';
+import persistence from '../models/persistence.js';
+const {userDao} = persistence
 
 export class AuthController{
     async register(req,res) {

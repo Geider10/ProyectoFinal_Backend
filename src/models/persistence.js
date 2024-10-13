@@ -25,4 +25,4 @@ switch (typeDB) {
         break;
 }
 
-export {cartDao, productDao, userDao}
+export default {cartDao, productDao, userDao}

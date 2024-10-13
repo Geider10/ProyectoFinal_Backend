@@ -1,4 +1,8 @@
-import {productDao} from '../models/persistence.js';
+import persistence from '../models/persistence.js';
+import {ProductRepository} from '../repository/product.repository.js';
+const {productDao} = persistence
+const proRepository = new ProductRepository()
+
 export class ProductController{
     async getProducts(req,res){
         try{
@@ -15,9 +19,8 @@ export class ProductController{
     }
     async getProductById(req,res){ 
         try{
-            productDao.testLog()
             const id = req.params.id
-            const product = await productDao.getProductById(id)
+            const product = await proRepository.getProductById(id)
             console.log(product);
             if(!product) return res.json({error: 'user not found'})
             res.json({success: 'request get of product by id',payload : product})

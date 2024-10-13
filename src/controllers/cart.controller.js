@@ -1,4 +1,5 @@
-import {cartDao} from '../models/persistence.js';
+import persistence from '../models/persistence.js';
+const {cartDao} = persistence
 
 export class CartController{
     async getCarts(req,res){
