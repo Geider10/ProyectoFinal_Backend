@@ -4,6 +4,6 @@ dotenv.config()
 
 export const initMongoDB = ()=>{
     connect(process.env.MONGO_URL)
-    .then(() =>console.log('connection with db'))
+    .then(() =>console.log('connection with mongo'))
     .catch(()=>console.log('error connect with db'))
 }

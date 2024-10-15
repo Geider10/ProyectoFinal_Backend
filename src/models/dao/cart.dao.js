@@ -1,4 +1,4 @@
-import {cartModel} from './cart.model.js';
+import {cartModel} from '../schema/cart.model.js';
 
 export class CartDao{
     async getCarts(){

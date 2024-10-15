@@ -7,7 +7,7 @@ viewRouter.get('/',(req,res)=>{
 viewRouter.get('api/product/',(req,res)=>{
     const response = res
     console.log(response);
-    res.render('index')
+    res.render('products')
 })
 // viewRouter.get("/products",async(req,res)=>{
 //     const limit = parseInt(req.query.limit) || 5

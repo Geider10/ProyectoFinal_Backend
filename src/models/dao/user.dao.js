@@ -1,4 +1,4 @@
-import {userModel} from './user.model.js';
+import {userModel} from '../schema/user.model.js';
 export class UserDao{
     async getUserByEmail(email){
         const user = await userModel.findOne({email: email})

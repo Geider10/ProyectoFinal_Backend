@@ -1,4 +1,4 @@
-import {productModel} from './product.model.js';
+import {productModel} from '../schema/product.model.js';
 export class ProductDao{
     async getProducts(limit, page, category){
         if(category){

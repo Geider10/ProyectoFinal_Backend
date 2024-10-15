@@ -1,6 +1,6 @@
-import {CartDao} from './mongodb/cart.dao.js';
-import {ProductDao} from './mongodb/product.dao.js';
-import {UserDao} from './mongodb/user.dao.js';
+import {CartDao} from './dao/cart.dao.js';
+import {ProductDao} from './dao/product.dao.js';
+import {UserDao} from './dao/user.dao.js';
 import {initMongoDB} from './connection.js';
 
 let userDao = null
