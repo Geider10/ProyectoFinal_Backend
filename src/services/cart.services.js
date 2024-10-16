@@ -22,7 +22,8 @@ export class CartService{
     }
     async addCart(cart){
         try {
-            await this.cart.addCart(cart)
+            const newCart = await this.cart.addCart(cart)
+            return newCart
         } catch (e) {
             throw new Error(e)
         }

@@ -10,7 +10,8 @@ export class CartDao{
         return cart
     }
     async addCart(cart){
-        await cartModel.create(cart)
+        const newCart = await cartModel.create(cart)
+        return newCart
     }
     //custom function for add, updates, deletes
     async updateContentAtCart(id, cart){

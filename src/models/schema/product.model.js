@@ -8,10 +8,7 @@ const schema = mongoose.Schema({
     price: {type : Number, require : true},
     status: {type : Boolean, require : true},
     stock: {type : Number, require : true},
-    category: {type : String, require : true},
-    carts : {
-        type: Array,
-        default : []}
+    category: {type : String, require : true}
 })
 schema.plugin(mongoosePaginate)//segmentar los productos para mostrar al cliente
 export const productModel = mongoose.model('products', schema)

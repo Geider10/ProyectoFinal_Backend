@@ -1,17 +1,21 @@
 import {encryptPassword, verifyPassword,generateToken} from '../utils.js';
 import {UserService} from '../services/user.services.js';
+import {CartService} from '../services/cart.services.js';
 export class AuthController{
     constructor(){
         this.user = new UserService()
+        this.cart = new CartService()
     }
     register = async(req,res)=> {
         try{
             const user = req.body
             const existsUser = await this.user.getUserByEmail(user.email)
             if(!existsUser){
+                const cart = await this.cart.addCart()
                 const newUser = {
                     ...user,
-                    password : await encryptPassword(user.password)
+                    password : await encryptPassword(user.password),
+                    cartId : cart._id
                 }
                 await this.user.addUser(newUser)
                 res.json({success: 'add new user in db'})

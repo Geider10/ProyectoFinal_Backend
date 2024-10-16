@@ -39,6 +39,7 @@ export class CartController{
             const cartId = req.params.cId
             const productId = req.params.pId
             const cart = await this.cart.getCartById(cartId)
+            if(!cart) res.json({error: 'cart no found'})
             if(cart){
                 const productExist = cart.products.some(pro => pro.productId._id == productId)
                 console.log(productExist);
