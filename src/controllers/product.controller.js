@@ -21,8 +21,7 @@ export class ProductController{
         try{
             const id = req.params.id
             const product = await this.product.getProductById(id)
-            console.log(product);
-            if(!product) return res.json({error: 'user not found'})
+            if(!product) return res.json({error: 'product not found'})
             res.json({success: 'request get of product by id',payload : product})
         }
         catch(e){

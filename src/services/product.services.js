@@ -1,10 +1,9 @@
 import persistence from '../models/persistence.js';
-import {ProductRepository} from '../repository/product.repository.js';
+import {ProductDto} from '../models/dto/product.dto.js';
 const {productDao} = persistence
 export class ProductService{
     constructor(){
         this.product = productDao
-        this.productRepo = new ProductRepository()
     }
     async getProducts(limit, page, category){
         try {
@@ -16,8 +15,9 @@ export class ProductService{
     }
     async getProductById(id){
         try {
-            const product = await this.productRepo.getProductById(id)
-            return product
+            const product = await this.product.getProductById(id)
+            const productCustom = new ProductDto(product)
+            return productCustom.getProductCustom()
         } catch (e) {
             throw new Error(e)
         }
