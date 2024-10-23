@@ -26,8 +26,8 @@ export const verifyPassword = async(password,hashPassword) =>{
         throw new Error('error verify password')
     }
 }
-export const generateToken = (idUser) =>{
-    const token = jwt.sign({id: idUser}, process.env.SECRET_KEY,{
+export const generateToken = (idUser,rolUser) =>{
+    const token = jwt.sign({id: idUser, rol: rolUser}, process.env.SECRET_KEY,{
         expiresIn : '30m'
     })
     return token

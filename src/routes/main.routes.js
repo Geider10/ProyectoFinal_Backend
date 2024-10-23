@@ -7,4 +7,4 @@ export const mainRouter = Router()
 //need auth and permissions to run endpoints
 mainRouter.use('/user',userRouter)
 mainRouter.use('/product',passportCall('jwt'),productRouter)
-mainRouter.use('/cart',cartRouter)
+mainRouter.use('/cart',passportCall('jwt'),cartRouter)
