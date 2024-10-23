@@ -32,11 +32,12 @@ export class UserController{
         try{
             const {email, password} = req.body
             const user = await this.user.getUserByEmail(email)
-            if(!user) return res.json({error: 'user not found'})
+            if(!user) return res.json({error: 'user not found by email'})
             const matchPassword = await verifyPassword(password, user.password)
             if(!matchPassword) return res.json({error: 'password not match with email'})
+            //create token && upload token by authorization
             const token = generateToken(user._id)
-            if(!token) return res.json({error : 'not there is tokek'})
+            if(!token) return res.json({error : 'there is not token'})
             res.header('Authorization',token).json({succes: 'login great!'})
             console.log(token);
         }

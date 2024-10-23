@@ -10,8 +10,8 @@ const strategyConfig = {
 };
 //verifica si hay token 
 const verifyToken = async(jwt_payload, done) => {
-    if(!jwt_payload) return done(null, false, { messages: 'User not found' }); 
+    if(!jwt_payload) return done(null, false, { message: 'User no autherization' }); 
     return done(null, jwt_payload);
 };
 
-passport.use('current', new jwtStrategy(strategyConfig, verifyToken));
+passport.use('jwt', new jwtStrategy(strategyConfig, verifyToken));
