@@ -36,7 +36,7 @@ export class UserController{
             const matchPassword = await verifyPassword(password, user.password)
             if(!matchPassword) return res.json({error: 'password not match with email'})
             //create token && upload token by authorization
-            const token = generateToken(user._id,user.role)
+            const token = generateToken(user._id,user.rol)
             if(!token) return res.json({error : 'there is not token'})
             res.header('Authorization',token).json({succes: 'login great!'})
         }
