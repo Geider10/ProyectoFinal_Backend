@@ -1,7 +1,9 @@
 import {CartService} from '../services/cart.services.js';
+import {ProductService} from '../services/product.services.js';
 export class CartController{
     constructor(){
         this.cart = new CartService()
+
     }
     getCarts= async(req,res)=>{
         try{
@@ -19,9 +21,20 @@ export class CartController{
             const cart = await this.cart.getCartById(id)
             if(!cart) return res.json({error : 'cart not found'})
             res.json({success: 'request get of one cart', payload: cart})
+
         }
         catch(e){
             res.json({error: e.message})
+        }
+    }
+    purchaseCart = async(req,res)=>{
+        try {
+            const idCart = req.params.cId
+            const cart = await this.cart.getCartById(idCart)
+            if(!cart) return res.json({error : 'cart not found'})
+            console.log(cart.products[0].productId)
+        } catch (e) {
+            res.json({error : e.message})
         }
     }
     addCart= async(req,res)=>{

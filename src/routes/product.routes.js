@@ -5,7 +5,7 @@ export const productRouter = Router()
 const productControll = new ProductController()
 
 productRouter.get("/", productControll.getProducts)
-productRouter.get("/:id",checkRol('user'), productControll.getProductById)
+productRouter.get("/:id", productControll.getProductById)
 productRouter.post("/",checkRol('admin'), productControll.addProduct)
 productRouter.put("/:id",checkRol('admin'), productControll.updateProduct)
 productRouter.delete("/:id",checkRol('admin'), productControll.deleteProduct)
