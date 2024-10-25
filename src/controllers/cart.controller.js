@@ -42,7 +42,6 @@ export class CartController{
             const cartId = req.params.cId
             const productId = req.params.pId
             const cart = await this.cart.getCartById(cartId)
-            if(!cart) return res.json({error: 'cart no found'})
             const productExist = cart.products.some(pro => pro.productId._id == productId)
             const product = await this.product.getProductById(productId)
             if(productExist){//increment the product
@@ -69,18 +68,21 @@ export class CartController{
     updateProductsAtCart= async(req,res)=>{
         try{
             const cartId = req.params.cId
-            const productId = req.params.pId
-            const isIncrement = req.body
+            const productId = req.params.pId//get by params of cart.products.productId._id
+            const {isIncrement} = req.body
             const cart = await this.cart.getCartById(cartId)
-            if(!cart) return res.json({error : 'cart not found'})
-            if (isIncrement){
-
-            }
-            else{
-
-            }
-            const newCart = await this.cart.updateContentAtCart(cartId,productsCart)
-            res.json({success: 'request update of products in cart',payload : newCart})
+            const product = await this.product.getProductById(productId)
+            cart.products = cart.products.map( pro =>{
+                if(pro.productId._id == productId){
+                    const updatedQuantity = isIncrement ? pro.quantity + 1: pro.quantity - 1
+                    if(updatedQuantity < 1) return pro
+                    const updatedTotal = updatedQuantity * product.precio
+                    return {...pro,quantity : updatedQuantity, total : updatedTotal}
+                }
+                return pro
+            })
+            const newCart = await this.cart.updateContentAtCart(cartId,cart)
+            res.json({success: 'request put of quantity product',payload : newCart})
         }
         catch(e){
             res.json({error : e.message})
