@@ -90,10 +90,20 @@ export class CartController{
     }
     purchaseCart = async(req,res)=>{
         try {
-            const idCart = req.params.cId
-            const cart = await this.cart.getCartById(idCart)
-            if(!cart) return res.json({error : 'cart not found'})
-            console.log(cart.products[0].productId)
+            const cartId = req.params.cId
+            const cart = await this.cart.getCartById(cartId)
+            const notListPurchase = cart.products.filter(pro => pro.quantity > pro.productId.stock)
+            const listPurchase = cart.products.filter(pro => pro.quantity <= pro.productId.stock)
+            for (const product of listPurchase) {
+                const updateStock = product.productId.stock - product.quantity
+                const data = await this.product.updateProduct(product.productId._id,{stock: updateStock})
+                console.log(data);
+            }
+            //clean or set notListPurchase to cart
+            const newCart = await this.cart.updateContentAtCart(cartId,{products : notListPurchase})
+            console.log(newCart);
+            //generate ticket
+            res.json({success : 'req post of purchase & update stock'})
         } catch (e) {
             res.json({error : e.message})
         }
