@@ -3,7 +3,7 @@ import {ProductService} from '../services/product.services.js';
 export class CartController{
     constructor(){
         this.cart = new CartService()
-
+        this.product = new ProductService()
     }
     getCarts= async(req,res)=>{
         try{
@@ -27,16 +27,6 @@ export class CartController{
             res.json({error: e.message})
         }
     }
-    purchaseCart = async(req,res)=>{
-        try {
-            const idCart = req.params.cId
-            const cart = await this.cart.getCartById(idCart)
-            if(!cart) return res.json({error : 'cart not found'})
-            console.log(cart.products[0].productId)
-        } catch (e) {
-            res.json({error : e.message})
-        }
-    }
     addCart= async(req,res)=>{
         try{
             const cart = req.body
@@ -52,41 +42,57 @@ export class CartController{
             const cartId = req.params.cId
             const productId = req.params.pId
             const cart = await this.cart.getCartById(cartId)
-            if(!cart) res.json({error: 'cart no found'})
-            if(cart){
-                const productExist = cart.products.some(pro => pro.productId._id == productId)
-                console.log(productExist);
-                if(productExist){//increment the product
-                    cart.products.map(p => {
-                        if(p.productId._id == productId){
-                            return {...p, quantity: p.quantity++}//spred operator: refresh attribute 
-                        }
-                        return p
-                    })
-                    const newCart = await this.cart.updateContentAtCart(cartId, cart)
-                    res.json({success:'request post increment product inside cart',payload : newCart})
-                }
-                else{//add product in the cart
-                    //{solo acepta atributos del schema products}
-                    cart.products.push({productId: productId,quantity : 1})
-                    const newCart = await this.cart.updateContentAtCart(cartId,cart)//solo acepta cart como argumento
-                    res.json({success:'request post add product inside cart',payload : newCart})
-                }
+            if(!cart) return res.json({error: 'cart no found'})
+            const productExist = cart.products.some(pro => pro.productId._id == productId)
+            const product = await this.product.getProductById(productId)
+            if(productExist){//increment the product
+                cart.products = cart.products.map(p => {
+                    if(p.productId._id == productId){
+                        let quantityTotal = p.quantity + 1
+                        let priceTotal = quantityTotal * product.precio
+                        console.log(quantityTotal,priceTotal);
+                        return {...p, quantity: quantityTotal ,total : priceTotal}//spred operator: refresh attribute 
+                    }
+                    return p
+                })
             }
+            else{//add product in the cart,{solo acepta atributos del schema products}
+                cart.products.push({productId: productId,quantity : 1, total : product.precio})
+            }
+            const newCart = await this.cart.updateContentAtCart(cartId,cart)//solo acepta cart como argumento
+            res.json({success:'request post add/increment product inside cart',payload : newCart})
         }
         catch (e){
             res.json({error:e.message})
         }
     }
-    //dudoso, enpoint de +/- la cantidad de un producto
     updateProductsAtCart= async(req,res)=>{
         try{
             const cartId = req.params.cId
-            const productsCart = req.body
+            const productId = req.params.pId
+            const isIncrement = req.body
+            const cart = await this.cart.getCartById(cartId)
+            if(!cart) return res.json({error : 'cart not found'})
+            if (isIncrement){
+
+            }
+            else{
+
+            }
             const newCart = await this.cart.updateContentAtCart(cartId,productsCart)
             res.json({success: 'request update of products in cart',payload : newCart})
         }
         catch(e){
+            res.json({error : e.message})
+        }
+    }
+    purchaseCart = async(req,res)=>{
+        try {
+            const idCart = req.params.cId
+            const cart = await this.cart.getCartById(idCart)
+            if(!cart) return res.json({error : 'cart not found'})
+            console.log(cart.products[0].productId)
+        } catch (e) {
             res.json({error : e.message})
         }
     }

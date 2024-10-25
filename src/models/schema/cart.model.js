@@ -4,7 +4,8 @@ const schema = mongoose.Schema({
     products:{
         type: [{
             productId:{type:mongoose.Schema.Types.ObjectId, ref:"products"},
-            quantity: {type:Number,default:1}
+            quantity: {type:Number,default:1},
+            total: {type:Number}
         }]
     }
 })
