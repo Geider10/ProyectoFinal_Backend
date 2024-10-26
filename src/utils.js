@@ -2,11 +2,11 @@ import { dirname } from "node:path"
 import {fileURLToPath} from "node:url"
 export const __dirname = dirname(fileURLToPath(import.meta.url))
 
-import dotenv from 'dotenv';
-dotenv.config()
-
+import 'dotenv/config'
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import {createTransport} from 'nodemailer';
+
 export const encryptPassword = async(password) =>{
     try{
         const salt = await bcrypt.genSalt(10)
@@ -31,4 +31,29 @@ export const generateToken = (idUser,rolUser) =>{
         expiresIn : '30m'
     })
     return token
+}
+export const sendEmail = async (dest,subject,html) => {
+    const transporter = createTransport({
+        service : 'gmail',
+        port : 465,
+        secure : true,
+        auth : {
+            user :process.env.EMAIL_ADMIN,
+            pass : process.env.PASS_ADMIN
+        }
+    })
+    const emailOption = {
+        from : process.env.EMAIL_ADMIN,
+        to : dest,
+        subject : subject,
+        html : html
+    }
+    try {
+        const info = await transporter.sendMail(emailOption)
+        console.log('send email', info);
+        return info
+    } catch (e) {
+        throw new Error('error sending email')
+    }
+    
 }

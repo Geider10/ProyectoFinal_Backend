@@ -1,4 +1,4 @@
-import {encryptPassword, verifyPassword,generateToken} from '../utils.js';
+import {encryptPassword, verifyPassword,generateToken,sendEmail} from '../utils.js';
 import {UserService} from '../services/user.services.js';
 import {CartService} from '../services/cart.services.js';
 export class UserController{
@@ -17,6 +17,8 @@ export class UserController{
                 }
                 const resUser = await this.user.addUser(newUser)
                 await this.cart.addCart({userId : resUser._id})
+                const info = await sendEmail(user.email, 'Test of nodemailer',`<h1>Hola que tal ${user.first_name}<h1/>`)
+                console.log(info);
                 res.json({success: 'add new user in db'})
             }
             else{
