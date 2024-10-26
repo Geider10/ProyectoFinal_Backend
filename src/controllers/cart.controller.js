@@ -1,9 +1,12 @@
 import {CartService} from '../services/cart.services.js';
 import {ProductService} from '../services/product.services.js';
+import {TicketService} from '../services/ticket.services.js';   
+import crypto from 'node:crypto';
 export class CartController{
     constructor(){
         this.cart = new CartService()
         this.product = new ProductService()
+        this.ticket = new TicketService()
     }
     getCarts= async(req,res)=>{
         try{
@@ -49,7 +52,6 @@ export class CartController{
                     if(p.productId._id == productId){
                         let quantityTotal = p.quantity + 1
                         let priceTotal = quantityTotal * product.precio
-                        console.log(quantityTotal,priceTotal);
                         return {...p, quantity: quantityTotal ,total : priceTotal}//spred operator: refresh attribute 
                     }
                     return p
@@ -94,16 +96,26 @@ export class CartController{
             const cart = await this.cart.getCartById(cartId)
             const notListPurchase = cart.products.filter(pro => pro.quantity > pro.productId.stock)
             const listPurchase = cart.products.filter(pro => pro.quantity <= pro.productId.stock)
+            //update stock and content of cart
             for (const product of listPurchase) {
                 const updateStock = product.productId.stock - product.quantity
-                const data = await this.product.updateProduct(product.productId._id,{stock: updateStock})
-                console.log(data);
+                await this.product.updateProduct(product.productId._id,{stock: updateStock})
             }
-            //clean or set notListPurchase to cart
-            const newCart = await this.cart.updateContentAtCart(cartId,{products : notListPurchase})
-            console.log(newCart);
+            await this.cart.updateContentAtCart(cartId,{products : notListPurchase})
             //generate ticket
-            res.json({success : 'req post of purchase & update stock'})
+            console.log(listPurchase);
+            const amountPurchase = listPurchase.reduce((acc,current)=> acc + current.total,0)
+            const date = new Date()
+            const dateTime = date.getDate().toString() + '/' + (date.getMonth()+1).toString() + '/' + date.getFullYear().toString() 
+            const ticketSchema = {
+                code : crypto.randomUUID(),
+                purchase_datetime : dateTime,
+                purchaser_name : "my name",
+                purchaser_email : "my addres email",
+                amount : amountPurchase
+            }
+            await this.ticket.addTicket(ticketSchema)
+            res.json({success : 'req post of purchase & update stock', payload : ticketSchema})
         } catch (e) {
             res.json({error : e.message})
         }
