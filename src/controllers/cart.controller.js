@@ -1,12 +1,14 @@
 import {CartService} from '../services/cart.services.js';
 import {ProductService} from '../services/product.services.js';
 import {TicketService} from '../services/ticket.services.js';   
+import {UserService} from '../services/user.services.js';
 import crypto from 'node:crypto';
 export class CartController{
     constructor(){
         this.cart = new CartService()
         this.product = new ProductService()
         this.ticket = new TicketService()
+        this.user = new UserService()
     }
     getCarts= async(req,res)=>{
         try{
@@ -50,15 +52,15 @@ export class CartController{
             if(productExist){//increment the product
                 cart.products = cart.products.map(p => {
                     if(p.productId._id == productId){
-                        let quantityTotal = p.quantity + 1
+                        let quantityTotal = p.total_quantity + 1
                         let priceTotal = quantityTotal * product.precio
-                        return {...p, quantity: quantityTotal ,total : priceTotal}//spred operator: refresh attribute 
+                        return {...p, total_quantity: quantityTotal ,total_price : priceTotal}//spred operator: refresh attribute 
                     }
                     return p
                 })
             }
             else{//add product in the cart,{solo acepta atributos del schema products}
-                cart.products.push({productId: productId,quantity : 1, total : product.precio})
+                cart.products.push({productId: productId,total_quantity : 1, total_price : product.precio})
             }
             const newCart = await this.cart.updateContentAtCart(cartId,cart)//solo acepta cart como argumento
             res.json({success:'request post add/increment product inside cart',payload : newCart})
@@ -70,16 +72,16 @@ export class CartController{
     updateProductsAtCart= async(req,res)=>{
         try{
             const cartId = req.params.cId
-            const productId = req.params.pId//get by params of cart.products.productId._id
-            const {isIncrement} = req.body
+            const productId = req.params.pId//get productId by params of cart.products.productId._id
+            const {isIncrement} = req.body//define como actualizar el stock del producto
             const cart = await this.cart.getCartById(cartId)
             const product = await this.product.getProductById(productId)
             cart.products = cart.products.map( pro =>{
                 if(pro.productId._id == productId){
-                    const updatedQuantity = isIncrement ? pro.quantity + 1: pro.quantity - 1
+                    const updatedQuantity = isIncrement ? pro.total_quantity + 1: pro.total_quantity - 1
                     if(updatedQuantity < 1) return pro
                     const updatedTotal = updatedQuantity * product.precio
-                    return {...pro,quantity : updatedQuantity, total : updatedTotal}
+                    return {...pro,total_quantity : updatedQuantity, total_price : updatedTotal}
                 }
                 return pro
             })
@@ -94,25 +96,25 @@ export class CartController{
         try {
             const cartId = req.params.cId
             const cart = await this.cart.getCartById(cartId)
-            const notListPurchase = cart.products.filter(pro => pro.quantity > pro.productId.stock)
-            const listPurchase = cart.products.filter(pro => pro.quantity <= pro.productId.stock)
-            //update stock and content of cart
+            //filtrar product by available and update stock of product, clean content cart
+            const listPurchase = cart.products.filter(pro => pro.total_quantity <= pro.productId.stock)
+            const notListPurchase = cart.products.filter(pro => pro.total_quantity > pro.productId.stock)
             for (const product of listPurchase) {
-                const updateStock = product.productId.stock - product.quantity
+                const updateStock = product.productId.stock - product.total_quantity
                 await this.product.updateProduct(product.productId._id,{stock: updateStock})
             }
             await this.cart.updateContentAtCart(cartId,{products : notListPurchase})
-            //generate ticket
-            console.log(listPurchase);
-            const amountPurchase = listPurchase.reduce((acc,current)=> acc + current.total,0)
+            //generate attributes custom for user
             const date = new Date()
             const dateTime = date.getDate().toString() + '/' + (date.getMonth()+1).toString() + '/' + date.getFullYear().toString() 
+            const amountPurchase = listPurchase.reduce((acc,current)=> acc + current.total_price,0)
+            const user = await this.user.getUserById(cart.userId)
             const ticketSchema = {
                 code : crypto.randomUUID(),
+                purchaser_fullname : (user.first_name + ' ' + user.last_name),
+                purchaser_email : user.email,
                 purchase_datetime : dateTime,
-                purchaser_name : "my name",
-                purchaser_email : "my addres email",
-                amount : amountPurchase
+                total_amount : amountPurchase
             }
             await this.ticket.addTicket(ticketSchema)
             res.json({success : 'req post of purchase & update stock', payload : ticketSchema})

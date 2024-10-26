@@ -11,13 +11,12 @@ export class UserController{
             const user = req.body
             const existsUser = await this.user.getUserByEmail(user.email)
             if(!existsUser){
-                const cart = await this.cart.addCart()
                 const newUser = {
                     ...user,
-                    password : await encryptPassword(user.password),
-                    cartId : cart._id
+                    password : await encryptPassword(user.password)
                 }
-                await this.user.addUser(newUser)
+                const resUser = await this.user.addUser(newUser)
+                await this.cart.addCart({userId : resUser._id})
                 res.json({success: 'add new user in db'})
             }
             else{

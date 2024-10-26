@@ -9,6 +9,7 @@ export class UserDao{
         return user
     }
     async addUser (user) {
-        await userModel.create(user)
+        const data = await userModel.create(user)
+        return data
     }
 }

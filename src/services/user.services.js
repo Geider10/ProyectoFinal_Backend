@@ -23,7 +23,8 @@ export class UserService{
     }
     async addUser(user){
         try {
-            await this.user.addUser(user)           
+            const data =  await this.user.addUser(user)      
+            return data     
         } catch (e) {
             throw new Error(e)  
         }
